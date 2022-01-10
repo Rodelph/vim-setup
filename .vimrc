@@ -1,34 +1,82 @@
 call plug#begin('~/.vim/plugged')
-
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'jackguo380/vim-lsp-cxx-highlight'
-Plug 'morhetz/gruvbox'
-Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'vim-airline/vim-airline'
-" Initialize plugin system
+Plug 'vim-airline/vim-airline-themes'
+Plug 'jiangmiao/auto-pairs'
+Plug 'morhetz/gruvbox'
+Plug 'junegunn/vim-github-dashboard', { 'on': ['GHDashboard', 'GHActivity'] }
+Plug 'cjrh/vim-conda'
+Plug 'mangeshrex/uwu.vim'
+Plug 'joshdick/onedark.vim'
+Plug 'cdelledonne/vim-cmake'
+Plug 'bfrg/vim-cpp-modern'
 call plug#end()
 
-syntax on 
-colorscheme gruvbox
-set background=dark
+map <C-n> :NERDTreeToggle<CR>
+
+syntax on
+set smartindent
+set nu
+set nowrap
+set updatetime=50
+set smartcase
+set noswapfile
+set nobackup
+set undodir=~/.vim/undodir
+set undofile
+set incsearch
+set termguicolors
+set scrolloff=8
+set noshowmode
+set completeopt=menuone,noinsert,noselect
+set cursorline
+set splitright
 set number
+colorscheme uwu
 set expandtab
 set tabstop=4
 set shiftwidth=4
 set noswapfile
 set noshowmode
+set encoding=utf-8
+set hidden
+set nobackup
+set nowritebackup
+set cmdheight=2
+set shortmess+=c
 
-"mappings
-map <C-n> :NERDTreeToggle<CR>
+let g:cpp_attributes_highlight = 1
+let g:cpp_member_highlight = 1
+let g:cpp_function_highlight = 1
+let g:cpp_simple_highlight = 1
+
+let g:UwuNR=1
+
+"Jedi stuff
+let g:pymode_rope = 1
+let g:jedi#force_py_version = 2
+let g:UltisnipsUsePythonVersion = 21
+let g:conda_startup_msg_suppress = 1
+let g:conda_startup_wrn_suppress = 1
+
+map <F4> :CondaChangeEnv<CR>
+
+if has("nvim-0.5.0") || has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
 highlight LspCxxHlSymField guifg=#E06C75
 highlight LspCxxHlSymNamespace guifg=#E06C75
 
 " air-line
 let g:airline_powerline_fonts = 1
-
+let g:airline_theme='dark'
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
@@ -55,39 +103,6 @@ let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
 
-" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
-" unicode characters in the file autoload/float.vim
-set encoding=utf-8
-
-" TextEdit might fail if hidden is not set.
-set hidden
-
-" Some servers have issues with backup files, see #649.
-set nobackup
-set nowritebackup
-
-" Give more space for displaying messages.
-set cmdheight=2
-
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=300
-
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("nvim-0.5.0") || has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
-
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
